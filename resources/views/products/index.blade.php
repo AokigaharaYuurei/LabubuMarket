@@ -11,11 +11,15 @@
     </header>
     <main>
         <div class="container">
+        @foreach ($products as $product)
             <form method="POST" action="">
                 <div class="cards">
-                    
+                    <p>{{ $product->name }}</p>
+                    <p>{{ $product->description }}</p>
+                    <p>{{ $product->price }}</p>
                 </div>
-            </form>
+        </form>
+        @endforeach
         </div>
 
     </main>
