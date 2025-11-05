@@ -11,4 +11,9 @@ class ProductController extends Controller
         $products = Product::all(); 
         return view('products.index', compact('products'));
     }
+
+    public function card()
+    {
+        return view('products.card');
+    }
 }

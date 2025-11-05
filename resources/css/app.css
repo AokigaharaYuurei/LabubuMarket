@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.cards{
+    background-color: aquamarine;
+}
+.container{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:20px;
+
+}
+.cards{
+
+}
+main{
+    display: flex;
+    justify-content: center;
+}

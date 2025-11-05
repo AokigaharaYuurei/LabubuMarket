@@ -4,27 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
+    <x-app-layout>
     <header>
-        <a href=""><h1>ЛАБУБУ.МАРКЕТ</h1></a>
+        <a href="{{route('products.index')}}"><h1>ЛАБУБУ.МАРКЕТ</h1></a>
     </header>
     <main>
         <div class="container">
-        @foreach ($products as $product)
-            <form method="POST" action="">
-                <div class="cards">
-                    <p>{{ $product->name }}</p>
-                    <p>{{ $product->description }}</p>
-                    <p>{{ $product->price }}</p>
-                </div>
-        </form>
-        @endforeach
+            @foreach ($products as $product)
+            <a href="{{route('products.card')}}">
+                <form method="POST" action="">
+                    @csrf
+                    <div class="cards">
+                        <p>{{ $product->name }}</p>
+                        <p>{{ $product->description }}</p>
+                        <p>{{ $product->price }}</p>
+                    </div>
+                </form>
+            </a>
+            @endforeach
         </div>
-
     </main>
-    <footer>
-
-    </footer>
+    <footer></footer>
+    </x-app-layout>
 </body>
 </html>
