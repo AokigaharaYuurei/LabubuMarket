@@ -7,17 +7,20 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    <x-app-layout>
-        <header>
+    <header>
             <a href="{{ route('products.index') }}">
-                <h1>ЛАБУБУ.МАРКЕТ</h1>
+                <h1 class="name">ЛАБУБУ.МАРКЕТ</h1>
             </a>
         </header>
+    <x-app-layout>
         <main>
             @isset($product) {{-- Проверяем, существует ли переменная $product --}}
+              <div class="card">
                 <p>{{ $product->name }}</p>
+                <p>{{ $product->category_id }}</p>
                 <p>{{ $product->description }}</p>
                 <p>Цена: {{ $product->price }}</p>
+                </div>
             @else
                 <p>Продукт не найден</p>
             @endisset
