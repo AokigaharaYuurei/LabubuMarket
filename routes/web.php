@@ -17,11 +17,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    
-    Route::get('/products',[ProductController::class, 'index'])->name('products.index');
-    Route::get('/products/card',[ProductController::class, 'card'])->name('products.card');
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/card/{id?}', [ProductController::class, 'card'])->name('products.card'); // Добавьте необязательный параметр
 });
-
-
 
 require __DIR__.'/auth.php';
