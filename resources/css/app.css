@@ -4,8 +4,9 @@
 
 .container{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+   grid-template-columns: repeat(2, 1fr);
     gap:20px;
+    
 
 }
 
@@ -16,4 +17,42 @@
 main{
     display: flex;
     justify-content: center;
+}
+
+.search_input{
+     margin-left: 8px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 545px;
+    border: 1px solid #F1F1F1;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.search_input img {
+    width: 36px;
+    height: 36px;
+    margin-left: 4px;
+    opacity: 0.6;
+}
+
+.search_input input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 16px;
+    background: transparent;
+}
+
+.search_input input::placeholder {
+    color: #999;
+}
+
+.card{
+    width: 300px;
+    height: 200px;
+    background-color: #dbdada;
+    border-radius: 50px;
+    padding: 20%;
 }

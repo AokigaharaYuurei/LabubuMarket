@@ -16,6 +16,7 @@
         <main>
             @isset($product) {{-- Проверяем, существует ли переменная $product --}}
               <div class="card">
+                <p>{{ $product->img }}</p>
                 <p>{{ $product->name }}</p>
                 <p>{{ $product->category_id }}</p>
                 <p>{{ $product->description }}</p>
