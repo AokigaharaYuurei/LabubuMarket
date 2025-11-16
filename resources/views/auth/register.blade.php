@@ -9,6 +9,14 @@
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
+        <!-- Login -->
+
+        <div class="mt-4">
+            <x-input-label for="login" :value="__('Login')" />
+            <x-text-input id="login" class="block mt-1 w-full" type="text" name="login" :value="old('login')" required minlength="6" pattern="[А-Яа-яЁё]{6,}" title="Логин должен содержать только кириллические символы (не менее 6)" autocomplete="login" />
+            <x-input-error :messages="$errors->get('login')" class="mt-2" />
+        </div>
+
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
@@ -22,8 +30,8 @@
 
             <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+                            name="password "
+                            required autocomplete="new-password" minlength="6"/>
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
@@ -34,7 +42,7 @@
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
                             type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+                            name="password_confirmation" required autocomplete="new-password" minlength="6"/>
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
