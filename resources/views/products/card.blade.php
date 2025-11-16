@@ -15,7 +15,7 @@
     <x-app-layout>
         <main>
             @isset($product) {{-- Проверяем, существует ли переменная $product --}}
-              <div class="card">
+              <div class="card_2">
                 <p>{{ $product->img }}</p>
                 <p>{{ $product->name }}</p>
                 <p>{{ $product->category_id }}</p>
