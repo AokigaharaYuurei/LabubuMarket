@@ -4,23 +4,58 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
-        return view('products.index', compact('products'));
+        $search = $request->input('search');
+        
+        // Если есть поисковый запрос, ищем товары
+        if ($search) {
+            $products = Product::where('name', 'LIKE', "%{$search}%")
+                ->orWhere('description', 'LIKE', "%{$search}%")
+                ->orWhere('price', 'LIKE', "%{$search}%")
+                ->get();
+        } else {
+            // Если нет поиска, показываем все товары
+            $products = Product::all();
+        }
+        
+        return view('products.index', compact('products', 'search'));
     }
 
-    public function card($id = null)
+    public function card($id)
     {
-        if ($id) {
-            $product = Product::findOrFail($id);
-            return view('products.card', compact('product'));
-        }
+        $product = Product::findOrFail($id);
+        return view('products.card', compact('product'));
+    }
 
-        $products = Product::all();
-        return view('products.card', compact('products'));
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        
+        // Поиск по базе данных
+        $products = Product::where('name', 'LIKE', "%{$search}%")
+            ->orWhere('description', 'LIKE', "%{$search}%")
+            ->orWhere('price', 'LIKE', "%{$search}%")
+            ->get();
+            
+        return view('products.index', compact('products', 'search'));
+    }
+
+    // Альтернативный метод с использованием DB facade
+    public function searchRaw(Request $request)
+    {
+        $search = $request->input('search');
+        
+        $products = DB::table('products')
+            ->where('name', 'LIKE', "%{$search}%")
+            ->orWhere('description', 'LIKE', "%{$search}%")
+            ->orWhere('price', 'LIKE', "%{$search}%")
+            ->get();
+            
+        return view('products.index', compact('products', 'search'));
     }
 }
