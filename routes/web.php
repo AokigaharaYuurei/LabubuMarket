@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,6 +29,27 @@ Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart
 Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/update/{productId}', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+
+
+
+
+
+
+
+
+// routes/web.php
+Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add');
+
+// Заказы
+Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
+Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+Route::get('/order/success/{orderId}', [OrderController::class, 'success'])->name('order.success');
+
+// Админка заказов
+Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orders.index');
+Route::patch('/admin/orders/{orderId}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.update-status');
 });
+
+
 
 require __DIR__.'/auth.php';

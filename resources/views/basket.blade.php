@@ -81,9 +81,9 @@
                     @csrf
                     <button type="submit" class="button">Очистить корзину</button>
                 </form>
-                <button class="button button-success" style="padding: 0.75rem 2rem; font-size: 1.1rem;">
-                    Оформить заказ
-                </button>
+                <a href="{{ route('checkout') }}" class="button button-success" style="padding: 0.75rem 2rem; font-size: 1.1rem; text-decoration: none;">
+    Оформить заказ
+</a>
             </div>
         @else
             <div class="empty-cart">
