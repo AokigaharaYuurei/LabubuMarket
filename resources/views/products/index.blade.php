@@ -7,10 +7,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    <header>
+    <header class="header">
         <a href="{{ route('products.index') }}">
             <h1 class="name">ЛАБУБУ.МАРКЕТ</h1>
         </a>
+        <a href="{{ route('basket.index') }}"><img src="/img/basket.png" alt="">
+        @if($cartCount ?? 0 > 0)
+            <span class="basket-count">{{ $cartCount }}</span>
+        @endif</a>
     </header>
 
     <x-app-layout>
@@ -46,30 +50,23 @@
                 <div class="container">
                     @if($products->count() > 0)
                         @foreach ($products as $product)
-                            <a href="{{ route('products.card', ['id' => $product->id]) }}" style="text-decoration: none;">
-                                <div class="card">
-                                    <div class="card-image">
-                                        @if($product->image)
-                                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
-                                        @elseif($product->img)
-                                            <img src="{{ $product->img }}" alt="{{ $product->name }}">
-                                        @else
-                                            <span style="color: #9ca3af;">Нет изображения</span>
-                                        @endif
-                                    </div>
-                                    
-                                    @if($product->category_id)
-                                        <div class="card-category">Категория: {{ $product->category_id }}</div>
-                                    @endif
-                                    
-                                    <h3 class="card-title">{{ $product->name }}</h3>
-                                    <p class="card-description">
-                                        {{ $product->description ? Str::limit($product->description, 120) : 'Описание отсутствует' }}
-                                    </p>
-                                    <div class="card-price">{{ number_format($product->price, 0, ',', ' ') }} ₽</div>
-                                    <button class="button_add_in_buscket" type="button">Добавить в корзину</button>
-                                </div>
-                            </a>
+                            <div class="card">
+                                
+                                @if($product->category_id)
+                                    <div class="card-category">Категория: {{ $product->category_id }}</div>
+                                @endif
+                                
+                                <h3 class="card-title">{{ $product->name }}</h3>
+                                <p class="card-description">
+                                    {{ $product->description ? Str::limit($product->description, 120) : 'Описание отсутствует' }}
+                                </p>
+                                <div class="card-price">{{ number_format($product->price, 0, ',', ' ') }} ₽</div>
+                                
+                                <!-- Кнопка "Перейти к товару" -->
+                                <a href="{{ route('products.card', ['id' => $product->id]) }}" style="text-decoration: none;">
+                                    <button class="button_add_in_buscket" type="button">Перейти к товару</button>
+                                </a>
+                            </div>
                         @endforeach
                     @else
                         <div class="no-results">
@@ -116,17 +113,8 @@
                     }
                 });
             }
-            
-            // Предотвращаем отправку формы при нажатии кнопки "Добавить в корзину"
-            document.querySelectorAll('.button_add_in_buscket').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    alert('Товар добавлен в корзину!');
-                    // Здесь будет логика добавления в корзину
-                });
-            });
+        
         });
     </script>
 </body>
-</html> 
+</html>

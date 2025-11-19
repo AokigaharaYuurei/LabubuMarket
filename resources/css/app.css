@@ -160,6 +160,11 @@ header {
     background-color: white;
 }
 
+.header{
+    display: flex;
+    justify-content: space-between;
+}
+
 .all_elements {
     width: 100%;
 }
