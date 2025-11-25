@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/OrderController.php
 
 namespace App\Http\Controllers;
 
