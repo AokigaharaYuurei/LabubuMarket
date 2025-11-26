@@ -51,5 +51,12 @@ Route::patch('/admin/orders/{orderId}/status', [OrderController::class, 'updateS
 });
 
 
+// routes/web.php
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    // Явно укажем полный namespace контроллера
+Route::get('/admin/orders', [App\Http\Controllers\OrderController::class, 'index'])->name('admin.orders.index');
+Route::patch('/admin/orders/{orderId}/status', [App\Http\Controllers\OrderController::class, 'updateStatus'])->name('admin.orders.update-status');
+});
+
 
 require __DIR__.'/auth.php';

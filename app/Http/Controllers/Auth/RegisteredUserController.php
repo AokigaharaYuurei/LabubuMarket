@@ -20,6 +20,12 @@ class RegisteredUserController extends Controller
     public function create(): View
     {
         return view('auth.register');
+        return User::create([
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'password' => Hash::make($data['password']),
+        'role' => 'admin', // или другая логика назначения роли
+    ]);
     }
 
     /**
@@ -35,11 +41,6 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
 
         event(new Registered($user));
 
@@ -47,4 +48,5 @@ class RegisteredUserController extends Controller
 
         return redirect(route('products.index', absolute: false));
     }
+
 }

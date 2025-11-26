@@ -1,4 +1,5 @@
 <?php
+// app/Models/Order.php
 
 namespace App\Models;
 
@@ -11,45 +12,44 @@ class Order extends Model
 
     protected $fillable = [
         'order_number',
-        'customer_name',
+        'user_id',
+        'customer_name', 
         'address',
         'payment_method',
         'delivery_method',
-        'products_total',
-        'delivery_cost',
-        'total_amount',
         'status',
-        'order_items'
+        'total_amount'
     ];
 
-    protected $casts = [
-        'order_items' => 'array',
-        'products_total' => 'decimal:2',
-        'delivery_cost' => 'decimal:2',
-        'total_amount' => 'decimal:2'
-    ];
-
-    public static function generateOrderNumber()
-    {
-        return 'ORD-' . date('Ymd') . '-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
-    }
-
+    /**
+     * Get the status label attribute.
+     */
     public function getStatusLabelAttribute()
     {
         return [
             'new' => 'Новая',
-            'in_progress' => 'В работе',
+            'in_progress' => 'В работе', 
             'completed' => 'Завершена',
             'cancelled' => 'Отменена'
         ][$this->status] ?? $this->status;
     }
 
+    /**
+     * Get the delivery method label attribute.
+     */
     public function getDeliveryMethodLabelAttribute()
     {
         return [
-            'courier' => 'Курьерская доставка',
             'pickup' => 'Самовывоз',
-            'post' => 'Почтовая доставка'
+            'delivery' => 'Доставка'
         ][$this->delivery_method] ?? $this->delivery_method;
+    }
+
+    /**
+     * Get the user that owns the order.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
