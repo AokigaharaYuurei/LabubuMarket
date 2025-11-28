@@ -13,6 +13,9 @@
         .btn:hover { background: #4338ca; }
         .alert { padding: 1rem; margin-bottom: 1rem; border-radius: 4px; }
         .alert-error { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+        .summary { background: #f9fafb; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; }
+        .summary-item { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+        .summary-total { border-top: 1px solid #d1d5db; padding-top: 0.5rem; margin-top: 0.5rem; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -29,7 +32,24 @@
             </div>
         @endif
 
-        <form action="{{ route('order.store') }}" method="POST">
+        <!-- Сводка по заказу -->
+        <div class="summary">
+            <h3>Сводка заказа</h3>
+            <div class="summary-item">
+                <span>Товары:</span>
+                <span id="products-total">{{ number_format($productsTotal, 0, ',', ' ') }} ₽</span>
+            </div>
+            <div class="summary-item">
+                <span>Доставка:</span>
+                <span id="delivery-cost">{{ number_format($deliveryCost, 0, ',', ' ') }} ₽</span>
+            </div>
+            <div class="summary-item summary-total">
+                <span>Итого:</span>
+                <span id="total-amount">{{ number_format($total, 0, ',', ' ') }} ₽</span>
+            </div>
+        </div>
+
+        <form action="{{ route('order.store') }}" method="POST" id="order-form">
             @csrf
             
             <div class="form-group">
@@ -56,18 +76,52 @@
                 <label for="delivery_method">Способ получения *</label>
                 <select id="delivery_method" name="delivery_method" required>
                     <option value="">Выберите способ получения</option>
-                    <option value="delivery" {{ old('delivery_method') == 'delivery' ? 'selected' : '' }}>Доставка</option>
-                    <option value="pickup" {{ old('delivery_method') == 'pickup' ? 'selected' : '' }}>Самовывоз</option>
+                    <option value="delivery" {{ old('delivery_method') == 'delivery' ? 'selected' : '' }}>Доставка (+300 ₽)</option>
+                    <option value="pickup" {{ old('delivery_method') == 'pickup' ? 'selected' : '' }}>Самовывоз (бесплатно)</option>
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="total_amount">Сумма заказа *</label>
-                <input type="number" id="total_amount" name="total_amount" value="{{ old('total_amount', $total ?? 1000) }}" step="0.01" required>
-            </div>
+            <!-- Скрытое поле для общей суммы -->
+            <input type="hidden" name="total_amount" id="total_amount_input" value="{{ $total }}">
 
             <button type="submit" class="btn">Оформить заказ</button>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deliveryMethodSelect = document.getElementById('delivery_method');
+            const productsTotal = {{ $productsTotal }};
+            const deliveryCostElement = document.getElementById('delivery-cost');
+            const totalAmountElement = document.getElementById('total-amount');
+            const totalAmountInput = document.getElementById('total_amount_input');
+
+            function updateOrderSummary() {
+                const deliveryMethod = deliveryMethodSelect.value;
+                let deliveryCost = 0;
+
+                if (deliveryMethod === 'delivery') {
+                    deliveryCost = 300;
+                } else if (deliveryMethod === 'pickup') {
+                    deliveryCost = 0;
+                }
+
+                const totalAmount = productsTotal + deliveryCost;
+
+                // Обновляем отображение
+                deliveryCostElement.textContent = deliveryCost.toLocaleString('ru-RU') + ' ₽';
+                totalAmountElement.textContent = totalAmount.toLocaleString('ru-RU') + ' ₽';
+                
+                // Обновляем скрытое поле
+                totalAmountInput.value = totalAmount;
+            }
+
+            // Слушаем изменение способа доставки
+            deliveryMethodSelect.addEventListener('change', updateOrderSummary);
+
+            // Инициализируем при загрузке
+            updateOrderSummary();
+        });
+    </script>
 </body>
 </html>

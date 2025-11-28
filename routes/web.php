@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserController; // Правильный импорт
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -38,11 +38,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/order', [OrderController::class, 'store'])->name('order.store');
     Route::get('/order/success/{orderId}', [OrderController::class, 'success'])->name('order.success');
 
-    // Админка заказов
+    // Админка заказов (доступна для admin и seller)
     Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orders.index');
     Route::patch('/admin/orders/{orderId}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.update-status');
 
-    
+    // Админка пользователей (только для admin)
+    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::patch('/admin/users/{user}/role', [UserController::class, 'updateRole'])->name('admin.users.update-role');
+    Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 require __DIR__.'/auth.php';
