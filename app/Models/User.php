@@ -1,5 +1,4 @@
 <?php
-// app/Models/User.php
 
 namespace App\Models;
 
@@ -14,7 +13,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role', // добавляем role в fillable
+        'role',
     ];
 
     protected $hidden = [
@@ -32,5 +31,33 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
+    }
+
+    /**
+     * Проверяет, является ли пользователь продавцом
+     */
+    public function isSeller(): bool
+    {
+        return $this->role === 'seller';
+    }
+
+    /**
+     * Проверяет, является ли пользователь администратором или продавцом
+     */
+    public function isAdminOrSeller(): bool
+    {
+        return $this->isAdmin() || $this->isSeller();
+    }
+
+    /**
+     * Получить отображаемое имя роли
+     */
+    public function getRoleLabelAttribute(): string
+    {
+        return [
+            'admin' => 'Администратор',
+            'seller' => 'Продавец', 
+            'user' => 'Пользователь'
+        ][$this->role] ?? $this->role;
     }
 }
