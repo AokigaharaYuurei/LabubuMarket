@@ -51,6 +51,12 @@
                     @if($products->count() > 0)
                         @foreach ($products as $product)
                             <div class="card">
+                                <!-- Изображение товара -->
+                                <div class="card-image">
+                                    <img src="{{ $product->image ?? '/img/no-image.jpg' }}" 
+                                         alt="{{ $product->name }}"
+                                         onerror="this.src='/img/no-image.jpg'">
+                                </div>
                                 
                                 @if($product->category_id)
                                     <div class="card-category">Категория: {{ $product->category_id }}</div>
@@ -91,7 +97,6 @@
     </x-app-layout>
 
     <script>
-        // Автопоиск при вводе текста
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.querySelector('input[name="search"]');
             const searchForm = document.querySelector('.search-form');
@@ -103,17 +108,15 @@
                     clearTimeout(searchTimeout);
                     searchTimeout = setTimeout(() => {
                         searchForm.submit();
-                    }, 800); // Задержка 800ms
+                    }, 800);
                 });
                 
-                // Также можно искать по нажатию Enter
                 searchInput.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') {
                         searchForm.submit();
                     }
                 });
             }
-        
         });
     </script>
 </body>

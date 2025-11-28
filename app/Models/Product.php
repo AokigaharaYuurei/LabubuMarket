@@ -9,22 +9,28 @@ class Product extends Model
 {
     use HasFactory;
 
-    // Указываем имя таблицы (если отличается от стандартного)
     protected $table = 'products';
 
-    // Разрешаем массовое присвоение для этих полей
     protected $fillable = [
         'name',
         'description', 
         'price',
-        'image',
+        'image', // исправлено с 'img' на 'image'
         'category_id'
     ];
 
-    // Если хотите преобразовать типы данных
     protected $casts = [
         'price' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    // Метод для получения URL изображения
+    public function getImageUrlAttribute()
+    {
+        if ($this->image) {
+            return $this->image;
+        }
+        return '/img/no-image.jpg'; // изображение-заглушка
+    }
 }

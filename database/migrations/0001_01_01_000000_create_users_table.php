@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('lastname')->nullable();
             $table->string('login')->nullable();
             $table->string('tel')->nullable();
-             $table->string('role')->default('user');$table->string('role')->nullable();
+            $table->string('role')->default('user'); // ТОЛЬКО ОДИН РАЗ!
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -47,12 +47,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
-
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
-        });
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };
